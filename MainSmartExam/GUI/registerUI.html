@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+            position: relative;
+        }
+        .background-shape-left, .background-shape-right {
+            position: absolute;
+            width: 30%;
+            height: 100%;
+            background: #111111;
+            opacity: 1; /* Full opacity */
+        }
+        .background-shape-left {
+            top: -15%;  /* Moved further up */
+            left: 0;
+            border-bottom-right-radius: 50%;
+            transform: translateX(-15%);
+        }
+        .background-shape-right {
+            bottom: -15%;  /* Moved further down */
+            right: 0;
+            border-bottom-right-radius: 50%; /* Apply radius to all corners */
+            transform: translateX(15%) scaleX(-1) scaleY(-1); /* Flip both X and Y axis */
+        }
+        .register-container {
+            position: relative;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            border: 1px solid #d1d1d1;
+            z-index: 10;
+        }
+        .register-container h2 {
+            margin-bottom: 25px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #000;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d1d1;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+        .register-btn {
+            width: 100%;
+            padding: 12px;
+            background: #111111;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .register-btn:hover {
+            background: #333;
+        }
+        .alt-login {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .alt-login a {
+            color: #045496;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-login img {
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+        }
+
+        /* Responsive design for laptop and tablets */
+        @media screen and (max-width: 1024px) {
+            .background-shape-left, .background-shape-right {
+                width: 35%; /* Adjust background shapes width for tablets/laptops */
+            }
+            .register-container {
+                width: 350px; /* Adjust register container width */
+                padding: 30px; /* Adjust padding */
+            }
+        }
+
+        /* For mobile screens */
+        @media screen and (max-width: 768px) {
+            .background-shape-left, .background-shape-right {
+                width: 40%; /* Adjust background shapes width for smaller screens */
+            }
+            .register-container {
+                width: 90%; /* Full width on smaller screens */
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-shape-left"></div>
+    <div class="background-shape-right"></div>
+    <div class="register-container">
+        <h2>REGISTER</h2>
+        <form>
+            <div class="form-group">
+                <input type="text" placeholder="Email, Username or Phone no" /> <!-- Placeholder removed -->
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Password">
+            </div>
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+        <p class="alt-login">Already have an account? <a href="/login">Login</a></p>
+        <p style="margin: 10px 0; font-size: 14px; color: #666;">OR</p>
+        <div class="social-login">
+            <img src="Facebook icon.png" alt="Facebook">
+            <img src="google icon.png" alt="Google">
+        </div>
+    </div>
+</body>
+</html>
