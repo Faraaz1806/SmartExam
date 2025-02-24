@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+            position: relative;
+        }
+        .background-shape-left, .background-shape-right {
+            position: absolute;
+            width: 30%;
+            height: 100%;
+            background: #111111;
+            opacity: 1;
+        }
+        .background-shape-left {
+            top: -15%;
+            left: 0;
+            border-bottom-right-radius: 50%;
+            transform: translateX(-15%);
+        }
+        .background-shape-right {
+            bottom: -15%;
+            right: 0;
+            border-bottom-right-radius: 50%;
+            transform: translateX(15%) scaleX(-1) scaleY(-1);
+        }
+        .login-container {
+            position: relative;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            border: 1px solid #d1d1d1;
+            z-index: 10;
+        }
+        .login-container h2 {
+            margin-bottom: 25px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #000;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d1d1;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #111111;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .login-btn:hover {
+            background: #333;
+        }
+        .alt-login {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .alt-login a {
+            color: #045496;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-login img {
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+        }
+
+        /* Responsive design for laptop and tablets */
+        @media screen and (max-width: 1024px) {
+            .login-container {
+                width: 350px;
+                padding: 30px;
+            }
+        }
+
+        /* For mobile screens */
+        @media screen and (max-width: 768px) {
+            .login-container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-shape-left"></div>
+    <div class="background-shape-right"></div>
+    <div class="login-container">
+        <h2>LOGIN</h2>
+        <form method="POST" action="/login"> <!-- ✅ Added method and action -->
+            <div class="form-group">
+                <input type="text" name="identifier" placeholder="Email, Username or Mobile Number" required /> <!-- ✅ Added name attribute -->
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required> <!-- ✅ Added name attribute -->
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p class="alt-login">Don't have an account? <a href="/register">Register</a></p> <!-- ✅ Fixed incorrect link -->
+        <p style="margin: 10px 0; font-size: 14px; color: #666;">OR</p>
+        <div class="social-login">
+            <img src="{{ url_for('static', filename='Facebook icon.png') }}" alt="Facebook"> <!-- ✅ Fixed image paths -->
+            <img src="{{ url_for('static', filename='google icon.png') }}" alt="Google">
+        </div>
+    </div>
+</body>
+</html>
