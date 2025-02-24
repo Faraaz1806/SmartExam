@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
     <style>
         * {
             margin: 0;
@@ -24,21 +24,21 @@
             width: 30%;
             height: 100%;
             background: #111111;
-            opacity: 1;
+            opacity: 1; /* Full opacity */
         }
         .background-shape-left {
-            top: -15%;
+            top: -15%;  /* Moved further up */
             left: 0;
             border-bottom-right-radius: 50%;
             transform: translateX(-15%);
         }
         .background-shape-right {
-            bottom: -15%;
+            bottom: -15%;  /* Moved further down */
             right: 0;
-            border-bottom-right-radius: 50%;
-            transform: translateX(15%) scaleX(-1) scaleY(-1);
+            border-bottom-right-radius: 50%; /* Apply radius to all corners */
+            transform: translateX(15%) scaleX(-1) scaleY(-1); /* Flip both X and Y axis */
         }
-        .register-container {
+        .login-container {
             position: relative;
             background: white;
             padding: 40px;
@@ -49,7 +49,7 @@
             border: 1px solid #d1d1d1;
             z-index: 10;
         }
-        .register-container h2 {
+        .login-container h2 {
             margin-bottom: 25px;
             font-size: 26px;
             font-weight: 700;
@@ -67,30 +67,7 @@
             outline: none;
             font-size: 14px;
         }
-        .role-toggle {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .role-toggle input {
-            display: none;
-        }
-        .role-toggle label {
-            padding: 8px 15px;
-            border-radius: 25px;
-            cursor: pointer;
-            background: #ddd;
-            color: #333;
-        }
-        .role-toggle input:checked + label {
-            background: #111;
-            color: white;
-        }
-        .register-btn {
+        .login-btn {
             width: 100%;
             padding: 12px;
             background: #111111;
@@ -101,13 +78,13 @@
             font-size: 16px;
             font-weight: 600;
         }
-        .register-btn:hover {
+        .login-btn:hover {
             background: #333;
         }
         .alt-login {
             margin-top: 15px;
             font-size: 14px;
-        }                       
+        }
         .alt-login a {
             color: #045496;
             text-decoration: none;
@@ -124,29 +101,45 @@
             height: 35px;
             cursor: pointer;
         }
+
+        /* Responsive design for laptop and tablets */
+        @media screen and (max-width: 1024px) {
+            .background-shape-left, .background-shape-right {
+                width: 35%; /* Adjust background shapes width for tablets/laptops */
+            }
+            .register-container {
+                width: 350px; /* Adjust register container width */
+                padding: 30px; /* Adjust padding */
+            }
+        }
+
+        /* For mobile screens */
+        @media screen and (max-width: 768px) {
+            .background-shape-left, .background-shape-right {
+                width: 40%; /* Adjust background shapes width for smaller screens */
+            }
+            .register-container {
+                width: 90%; /* Full width on smaller screens */
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="background-shape-left"></div>
     <div class="background-shape-right"></div>
-    <div class="register-container">
-        <h2>REGISTER</h2>
-        <div class="role-toggle">
-            <input type="radio" id="student" name="role" value="Student" checked>
-            <label for="student">Student</label>
-            <input type="radio" id="teacher" name="role" value="Teacher">
-            <label for="teacher">Teacher</label>
-        </div>
+    <div class="login-container">
+        <h2>LOGIN</h2>
         <form>
             <div class="form-group">
-                <input type="text" placeholder="Email, Username or Mobile Number" />
+                <input type="text" placeholder="Email, Username or Mobile Number" /> <!-- Placeholder removed -->
             </div>
             <div class="form-group">
                 <input type="password" placeholder="Password">
             </div>
-            <button type="submit" class="register-btn">Register</button>
+            <button type="submit" class="login-btn">Login</button>
         </form>
-        <p class="alt-login">Already have an account? <a href="/login">Login</a></p>
+        <p class="alt-login">Don't have an account? <a href="/login">Register</a></p>
         <p style="margin: 10px 0; font-size: 14px; color: #666;">OR</p>
         <div class="social-login">
             <img src="Facebook icon.png" alt="Facebook">
