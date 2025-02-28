@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="profile-container">
+        <h1 class="profile-title">Student Profile</h1>
+        <form class="profile-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" placeholder="Enter your age">
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="class">Class</label>
+                <input type="text" id="class" placeholder="Enter your class">
+            </div>
+            <div class="form-group">
+                <label for="course">Course</label>
+                <input type="text" id="course" placeholder="Enter your course">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number">
+            </div>
+            <button type="submit" class="submit-btn">Save</button>
+        </form>
+    </div>
+</body>
+</html>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+    .profile-container {
+        width: 400px;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        border: 1px solid #cfcbcb;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        color: #222222;
+        text-align: center;
+    }
+    .profile-title {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+    .profile-form {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 1rem;
+    }
+    .form-group input, .form-group select {
+        width: 90%;
+        padding: 10px;
+        border-radius: 12px;
+        border: 1px solid #cfcbcb;
+        font-size: 1rem;
+        
+    }
+    .submit-btn {
+        margin-top: 20px;
+        background: #222222;
+        color: white;
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .submit-btn:hover {
+        background: #717171;
+    }
+</style>
