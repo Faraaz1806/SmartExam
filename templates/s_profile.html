@@ -12,15 +12,16 @@
         <form class="profile-form">
             <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" id="name" placeholder="Enter your full name">
+                <input type="text" id="name" placeholder="Enter your full name" required>
             </div>
             <div class="form-group">
                 <label for="age">Age</label>
-                <input type="number" id="age" placeholder="Enter your age">
+                <input type="number" id="age" placeholder="Enter your age" required>
             </div>
             <div class="form-group">
                 <label for="gender">Gender</label>
-                <select id="gender">
+                <select id="gender" required>
+                    <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -28,23 +29,82 @@
             </div>
             <div class="form-group">
                 <label for="class">Class</label>
-                <input type="text" id="class" placeholder="Enter your class">
+                <input type="text" id="class" placeholder="Enter your class" required>
             </div>
             <div class="form-group">
                 <label for="course">Course</label>
-                <input type="text" id="course" placeholder="Enter your course">
+                <input type="text" id="course" placeholder="Enter your course" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" placeholder="Enter your subject" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email">
+                <input type="email" id="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" placeholder="Enter your phone number">
+                <input type="tel" id="phone" placeholder="Enter your phone number" required>
             </div>
             <button type="submit" class="submit-btn">Save</button>
         </form>
     </div>
+    
+    <script>
+        // ✅ Load existing student profile data when the page loads
+        function loadProfile() {
+            fetch('/get_s_profile')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        console.log(data.message);
+                    } else {
+                        document.getElementById('name').value = data.name || '';
+                        document.getElementById('age').value = data.age || '';
+                        document.getElementById('gender').value = data.gender || '';
+                        document.getElementById('class').value = data.class || '';
+                        document.getElementById('course').value = data.course || '';
+                        document.getElementById('subject').value = data.subject || '';
+                        document.getElementById('email').value = data.email || '';
+                        document.getElementById('phone').value = data.phone || '';
+                    }
+                })
+                .catch(error => console.error('Error loading profile:', error));
+        }
+
+        // ✅ Save updated student profile
+        document.querySelector('.profile-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                class: document.getElementById('class').value,
+                course: document.getElementById('course').value,
+                subject: document.getElementById('subject').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            fetch('/save_profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Show success message
+                console.log(data);
+            })
+            .catch(error => console.error('Error saving profile:', error));
+        });
+
+        // ✅ Call function to load profile when the page is loaded
+        window.onload = loadProfile;
+    </script>
+    
 </body>
 </html>
 
@@ -86,18 +146,17 @@
         font-size: 1rem;
     }
     .form-group input, .form-group select {
-        width: 90%;
+        width: 100%;
         padding: 10px;
         border-radius: 12px;
         border: 1px solid #cfcbcb;
         font-size: 1rem;
-        
     }
     .submit-btn {
         margin-top: 20px;
         background: #222222;
         color: white;
-        padding: 20px;
+        padding: 10px;
         border: none;
         border-radius: 20px;
         font-size: 1rem;
