@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Test - SmartExam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .readonly {
+            background: #e9ecef;
+        }
+        .question-box {
+            background: #f1f1f1;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create Test</h2>
+        <form action="/create_test" method="POST">
+            <label>Test ID</label>
+            <input type="text" name="test_id" value="{{ test_id }}" class="readonly" readonly>
+
+            <label>Test Title</label>
+            <input type="text" name="test_title" required>
+
+            <div class="question-box">
+                <label>Question</label>
+                <textarea name="questions[]" required></textarea>
+
+                <label>Option A</label>
+                <input type="text" name="option_A[]" required>
+
+                <label>Option B</label>
+                <input type="text" name="option_B[]" required>
+
+                <label>Option C</label>
+                <input type="text" name="option_C[]" required>
+
+                <label>Option D</label>
+                <input type="text" name="option_D[]" required>
+
+                <label>Correct Option</label>
+                <div>
+                    <label><input type="radio" name="correct_option_1" value="A" required> A</label>
+                    <label><input type="radio" name="correct_option_1" value="B" required> B</label>
+                    <label><input type="radio" name="correct_option_1" value="C" required> C</label>
+                    <label><input type="radio" name="correct_option_1" value="D" required> D</label>
+                </div>
+            </div>
+
+            <button type="submit" name="add_question">Add Another Question</button>
+            <button type="submit" name="submit_test">Submit Test</button>
+        </form>
+    </div>
+</body>
+</html>
