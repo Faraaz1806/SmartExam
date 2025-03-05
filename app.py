@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 from pymongo import MongoClient
 from flask_bcrypt import Bcrypt
 from flask_session import Session
+#HEREE FARAAZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 
 app = Flask(__name__)
 
@@ -23,7 +24,31 @@ try:
     print("MongoDB connected successfully!")
 except Exception as e:
     print(f"MongoDB connection failed: {e}")
+#-------------------------------------------------------------------------------------
 
+# ✅ Route to render Create Test Page (GET) and save test to DB (POST)
+@app.route('/create_test', methods=['GET', 'POST'])
+def t_createtest():
+    if "username" not in session or session.get("role") != "teacher":
+        return redirect(url_for('login'))  # Restrict access to teachers only
+    
+    if request.method == 'POST':
+        data = request.json
+        test_data = {
+            "teacher": session["username"],  
+            "test_title": data.get("test_title"),
+            "questions": data.get("questions")  # List of questions
+        }
+        
+        # Store in MongoDB
+        mongo.tests.insert_one(test_data)
+        
+        return jsonify({"message": "Test created successfully!"})
+
+    return render_template("t_createtest.html", username=session["username"])
+
+
+#------------------------------------------------------------------------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
