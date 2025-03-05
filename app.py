@@ -126,5 +126,37 @@ def get_s_profile():
     student_profile = mongo.profiles.find_one({"username": session["username"], "role": "student"}, {"_id": 0})
     return jsonify(student_profile if student_profile else {"message": "Profile not found!"})
 
+
+#Teacher
+
+
+@app.route('/create-exam')
+def create_exam():
+    return render_template('create_exam.html')
+    
+@app.route('/view-results')
+def view_result():
+   return render_template('view_result.html')
+
+@app.route('/profile')
+def profile():
+    return render_template('t_profile.html')
+
+teacher_collection = mongo.db.teachers_Profile
+
+
+@app.route('/get_teacher_profile', methods=['GET'])
+def get_teacher_profile():
+    teacher = teacher_collection.find_one({}, {"_id": 0})  # Fetch the first teacher profile (modify as needed)
+    if teacher:
+        return jsonify(teacher)
+    return jsonify({"message": "No teacher profile found"})
+
+@app.route('/save_teacher_profile', methods=['POST'])
+def save_teacher_profile():
+    data = request.json
+    teacher_collection.update_one({}, {"$set": data}, upsert=True)  # Save or update
+    return jsonify({"message": "Teacher profile saved successfully!"})
+
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)  # Example: Run on port 8000
+     app.run(debug=True, port=8000)  # Example: Run on port 8000
