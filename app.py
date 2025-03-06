@@ -25,7 +25,9 @@ try:
 except Exception as e:
     print(f"MongoDB connection failed: {e}")
 #-------------------------------------------------------------------------------------
-
+@app.route('/')
+def home():
+    return render_template('mainLanding.html')
 # ✅ Route to render Create Test Page (GET) and save test to DB (POST)
 @app.route('/create_test', methods=['GET', 'POST'])
 def t_createtest():
@@ -172,16 +174,31 @@ teacher_collection = mongo.db.teachers_Profile
 
 @app.route('/get_teacher_profile', methods=['GET'])
 def get_teacher_profile():
-    teacher = teacher_collection.find_one({}, {"_id": 0})  # Fetch the first teacher profile (modify as needed)
+    if "username" not in session or session.get("role") != "teacher":
+        return jsonify({"message": "Unauthorized"}), 401  # Restrict access to teachers only
+
+    teacher = teacher_collection.find_one({"username": session["username"]}, {"_id": 0})
     if teacher:
         return jsonify(teacher)
+    
     return jsonify({"message": "No teacher profile found"})
+
 
 @app.route('/save_teacher_profile', methods=['POST'])
 def save_teacher_profile():
+    if "username" not in session or session.get("role") != "teacher":
+        return jsonify({"message": "Unauthorized"}), 401  # Restrict access to teachers only
+
     data = request.json
-    teacher_collection.update_one({}, {"$set": data}, upsert=True)  # Save or update
+    data["username"] = session["username"]  # Ensure profile is linked to the logged-in teacher
+
+    teacher_collection.update_one(
+        {"username": session["username"]},
+        {"$set": data},
+        upsert=True
+    )
     return jsonify({"message": "Teacher profile saved successfully!"})
+
 
 if __name__ == '__main__':
      app.run(debug=True, port=8000)  # Example: Run on port 8000

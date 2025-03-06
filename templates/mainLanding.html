@@ -78,14 +78,15 @@
         }
 
         .btn-login {
-            background: #ff7b00;
-            border: none;
+            background:rgb(37, 37, 36,0);
+            border: 1px solid white;
+            
         }
 
         .btn-register {
-            background: #00b4d8;
+            background:rgb(0, 0, 0);
             border: none;
-        }
+        }s
 
         .btn-custom:hover {
             transform: scale(1.05);
@@ -130,9 +131,15 @@
 
     <div class="glass-container">
         <h1>Welcome to SmartExam</h1>
-        <p>AI-powered online exam management system ensuring security and fairness.</p>
-        <a href="{{ url_for('login') }}" class="btn btn-custom btn-login">Login</a>
-        <a href="{{ url_for('register') }}" class="btn btn-custom btn-register">Register</a>
+        <p>Simplifies online tests with cutting-edge technology, ensuring secure, reliable, and accessible examination solutions for all.</p>
+        <button class="btn btn-custom btn-login" onclick="window.location.href='/register'">
+            Register
+        </button>
+        
+        <button class="btn btn-custom btn-register" onclick="window.location.href='/login'">
+            Login
+        </button>
+        
     </div>
 
 </body>

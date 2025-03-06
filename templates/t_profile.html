@@ -47,8 +47,14 @@
             fetch('/get_teacher_profile')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.message) {
-                        console.log(data.message);
+                    if (!data || Object.keys(data).length === 0 || data.message) {
+                        console.log("No profile found or unauthorized access.");
+                        document.getElementById('name').value = '';
+                        document.getElementById('age').value = '';
+                        document.getElementById('gender').value = '';
+                        document.getElementById('subject').value = '';
+                        document.getElementById('email').value = '';
+                        document.getElementById('phone').value = '';
                     } else {
                         document.getElementById('name').value = data.name || '';
                         document.getElementById('age').value = data.age || '';
@@ -60,10 +66,10 @@
                 })
                 .catch(error => console.error('Error loading profile:', error));
         }
-
+    
         document.querySelector('.profile-form').addEventListener('submit', function(event) {
             event.preventDefault();
-
+    
             const formData = {
                 name: document.getElementById('name').value,
                 age: document.getElementById('age').value,
@@ -72,7 +78,7 @@
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value
             };
-
+    
             fetch('/save_teacher_profile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -84,9 +90,10 @@
             })
             .catch(error => console.error('Error saving profile:', error));
         });
-
+    
         window.onload = loadProfile;
     </script>
+    
 
     <style>
         body {
