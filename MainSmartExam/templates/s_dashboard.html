@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        function navigateToProfile() {
+            window.location.href = 's_profile.html';
+        }
+        function navigateToTest() {
+            window.location.href = 's_test.html';
+        }
+        function navigateToResults() {
+            window.location.href = 's_results.html';
+        }
+    </script>    
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1 class="dashboard-title">Student Dashboard</h1>
+        <div class="dashboard-grid">
+            <button class="dashboard-card" onclick="window.location.href='/s_profile'">
+                <i class="fas fa-user-circle icon"></i>
+                <span>Profile</span>
+            </button>
+            <button class="dashboard-card" onclick="window.location.href='/s_test'">
+                <i class="fas fa-clipboard-list icon"></i>
+                <span>Take Test</span>
+            </button>
+            <button class="dashboard-card" onclick="window.location.href='/s_results'">
+                <i class="fas fa-chart-bar icon"></i>
+                <span>Results</span>
+            </button>
+            
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #222222;
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+    .dashboard-container {
+        text-align: center;
+    }
+    .dashboard-title {
+        color: white;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+    .dashboard-grid {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+    .dashboard-card {
+        width: 150px;
+        height: 150px;
+        background: white;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        border: none;
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+    .dashboard-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    .icon {
+        font-size: 50px;
+        color: #222222;
+        margin-bottom: 10px;
+    }
+</style>
