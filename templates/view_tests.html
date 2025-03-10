@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Previous Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Previous Tests</h2>
+        {% if tests %}
+        <table>
+            <tr>
+                <th>Test ID</th>
+                <th>Test Title</th>
+                <th>Date Created</th>
+            </tr>
+            {% for test in tests %}
+            <tr>
+                <td>{{ test.test_id }}</td>
+                <td>{{ test.test_title }}</td>
+                <td>{{ test.date_created }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No previous tests found.</p>
+        {% endif %}
+        <a href="/t_dashboard" class="back-btn">Back to Dashboard</a>
+    </div>
+</body>
+</html>

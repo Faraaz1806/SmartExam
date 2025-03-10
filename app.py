@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session,flash
 from pymongo import MongoClient
 from flask_bcrypt import Bcrypt
 from flask_session import Session
@@ -29,14 +29,19 @@ except Exception as e:
 def home():
     return render_template('mainLanding.html')
 # ✅ Route to render Create Test Page (GET) and save test to DB (POST)
-@app.route('/create_test', methods=['GET', 'POST'])
+import random
+
+@app.route('/create_test', methods=['GET', 'POST']) 
 def t_createtest():
     if "username" not in session or session.get("role") != "teacher":
         return redirect(url_for('login'))  # Restrict access to teachers only
     
     if request.method == 'POST':
         data = request.json
+        test_id = random.randint(1000, 9999)  # Generate a random 4-digit test ID
+        
         test_data = {
+            "test_id": test_id,
             "teacher": session["username"],  
             "test_title": data.get("test_title"),
             "questions": data.get("questions")  # List of questions
@@ -45,48 +50,71 @@ def t_createtest():
         # Store in MongoDB
         mongo.tests.insert_one(test_data)
         
-        return jsonify({"message": "Test created successfully!"})
+        return jsonify({"message": f"Test created successfully! Test ID: {test_id}", "test_id": test_id})
 
     return render_template("t_createtest.html", username=session["username"])
-
 
 #------------------------------------------------------------------------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         data = request.form
+        username = data["username"].strip().lower()
+        existing_user = mongo.db.users.find_one({"username": username})
+
+        if existing_user:
+            flash("❌ User already exists. Choose a different username.", "danger")
+            return redirect(url_for('register'))
+
         hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
         user = {
-            "username": data["username"],
+            "username": username,
             "password": hashed_password,
             "role": data["role"].lower()
         }
-        mongo.users.insert_one(user)
-        return redirect(url_for('login'))
-    return render_template("register.html")
+
+        try:
+            mongo.db.users.insert_one(user)
+            print("User inserted successfully")
+            flash("✅ Registration successful! Please log in.", "success") #added flash message
+            return redirect(url_for('login')) #Added redirect.
+        except Exception as mongo_error:
+            print(f"MongoDB insert error: {mongo_error}")
+            flash(f"Database error: {mongo_error}", "danger") #Added flash message.
+            return redirect(url_for('register')) #Added redirect.
+
+    return render_template("register.html") #Moved outside the POST block
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        data = request.form
-        user = mongo["users"].find_one({"username": data["identifier"]})
+        identifier = request.form.get("identifier")
+        password = request.form.get("password")
 
-        if user and bcrypt.check_password_hash(user["password"], data["password"]):
-            # ✅ Store user info in session
+        if not identifier or not password:
+            flash("❌ Please enter both username and password!", "danger")
+            return redirect(url_for('login'))
+
+        user = mongo.db.users.find_one({"username": identifier})
+
+        if user and bcrypt.check_password_hash(user["password"], password):
             session["username"] = user["username"]
             session["role"] = user["role"]
 
-            # ✅ Redirect to the respective dashboard
+            # flash("✅ Login successful!", "success")
+
             if user["role"] == "student":
                 return redirect(url_for('s_dashboard'))
             elif user["role"] == "teacher":
                 return redirect(url_for('t_dashboard'))
-            else:
-                return redirect(url_for('login'))  # Default fallback
+            elif user["role"] == "admin":
+                return redirect(url_for('a_dashboard'))
 
-        return jsonify({"message": "Invalid credentials!"}), 401
+        flash("❌ Invalid username or password!", "danger")
+        return redirect(url_for('login'))
 
     return render_template("login.html")
+
 
 
 @app.route('/logout')
@@ -98,14 +126,21 @@ def logout():
 def s_dashboard():
     if "username" not in session or session.get("role") != "student":
         return redirect(url_for('login'))
-    return render_template('s_dashboard.html', username=session["username"])
+
+    # Retrieve and clear the login message
+    login_message = session.pop('login_message', None)
+
+    # Pass the login_message to the template
+    return render_template('s_dashboard.html', username=session["username"], login_message=login_message)
 
 @app.route('/t_dashboard')
 def t_dashboard():
     if "username" not in session or session.get("role") != "teacher":
         return redirect(url_for('login'))
-    return render_template("t_dashboard.html", username=session["username"])
 
+    login_message = session.pop('login_message', None)
+
+    return render_template("t_dashboard.html", username=session["username"], login_message=login_message)
 @app.route('/s_profile')
 def s_profile():
     if "username" not in session or session.get("role") != "student":
@@ -160,6 +195,16 @@ def get_s_profile():
 @app.route('/create-exam')
 def create_exam():
     return render_template('create_exam.html')
+
+@app.route('/view_tests')
+def view_tests():
+    if "username" not in session or session.get("role") != "teacher":
+        return redirect(url_for('login'))  # Restrict access to teachers only
+    
+    tests = list(mongo.db.tests.find({}, {"_id": 0}))  # Fetch all tests, excluding ObjectId
+    return render_template('view_tests.html', tests=tests)
+
+
     
 @app.route('/view-results')
 def view_result():
