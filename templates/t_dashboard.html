@@ -113,18 +113,13 @@
     <div class="teacher-profile" onclick="toggleProfileDetails()">
         <div class="teacher-info">
             <img src="teacher-profile.jpg" alt="Teacher Profile">
-            <h3>Welcome, Teacher Name</h3>
+            <h3>Welcome, {% if teacher and teacher.name %}{{ teacher.name }}{% else %}Teacher{% endif %}</h3>
         </div>
     </div>
     <div id="teacherDetails" class="teacher-details">
         {% if teacher %}
-        <h2 id="welcomeMessage">Welcome, </h2>
-        <!-- Display Welcome + Full Name -->
-            <p><strong>Username:</strong> {{ teacher.username }}</p> <!-- Changed from 'Name' to 'Username' -->
-            <p><strong>Email:</strong> {{ teacher.email }}</p>
-            <p><strong>Age:</strong> {{ teacher.age }}</p>
-            <p><strong>Profession:</strong> {{ teacher.profession }}</p>
-        {% else %}
+            <h2 id="welcomeMessage">Welcome, {{ teacher.name }}</h2>
+            {% else %}
             <p>No teacher details available.</p>
         {% endif %}
     </div>
