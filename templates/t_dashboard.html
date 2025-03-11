@@ -118,8 +118,12 @@
     </div>
     <div id="teacherDetails" class="teacher-details">
         {% if teacher %}
-            <h2 id="welcomeMessage">Welcome, {{ teacher.name }}</h2>
-            {% else %}
+            <h2 id="welcomeMessage">Welcome, {{ teacher.name }}</h2> 
+            <p><strong>Username:</strong> {{ teacher.username }}</p>
+            <p><strong>Email:</strong> {{ teacher.email }}</p>
+            <p><strong>Age:</strong> {{ teacher.age }}</p> 
+            <p><strong>Phone:</strong> {{ teacher.phone }}</p> 
+        {% else %}
             <p>No teacher details available.</p>
         {% endif %}
     </div>
