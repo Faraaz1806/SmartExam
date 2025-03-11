@@ -118,7 +118,7 @@
     </div>
     <div id="teacherDetails" class="teacher-details">
         {% if teacher %}
-            <h2><strong>Teacher Name:</strong> {{ teacher.full_name }}</h2> <!-- Display Full Name -->
+            <h2>Welcome, {{ teacher.full_name }}</h2> <!-- Display Welcome + Full Name -->
             <p><strong>Username:</strong> {{ teacher.username }}</p> <!-- Changed from 'Name' to 'Username' -->
             <p><strong>Email:</strong> {{ teacher.email }}</p>
             <p><strong>Age:</strong> {{ teacher.age }}</p>
@@ -127,6 +127,7 @@
             <p>No teacher details available.</p>
         {% endif %}
     </div>
+    
     
     
     <div class="dashboard-container">
