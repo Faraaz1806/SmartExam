@@ -159,16 +159,19 @@ def view_results():
 def profile():
     return render_template('t_profile.html')
 
-@app.route('/get_teacher_profile', methods=['GET'])
+@app.route('/get_teacher_profile')
 def get_teacher_profile():
-    if "username" not in session or session.get("role") != "teacher":
-        return jsonify({"message": "Unauthorized"}), 401
+    teacher_id = session.get('teacher_id')  # Ensure session is storing teacher ID
+    teacher = Teacher.query.filter_by(id=teacher_id).first()
 
-    teacher = teachers_collection.find_one({"username": session["username"]}, {"_id": 0})
-    if teacher:
-        return jsonify(teacher)
-    
-    return jsonify({"message": "No teacher profile found"})
+    if not teacher:
+        return jsonify({"message": "No teacher found"}), 404
+
+    return jsonify({
+        "name": teacher.full_name,  # Ensure full_name is stored in DB
+        "email": teacher.email
+    })
+
 
 @app.route('/save_teacher_profile', methods=['POST'])
 def save_teacher_profile():

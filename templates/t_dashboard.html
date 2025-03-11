@@ -118,7 +118,8 @@
     </div>
     <div id="teacherDetails" class="teacher-details">
         {% if teacher %}
-            <h2>Welcome, {{ teacher.full_name }}</h2> <!-- Display Welcome + Full Name -->
+        <h2 id="welcomeMessage">Welcome, </h2>
+        <!-- Display Welcome + Full Name -->
             <p><strong>Username:</strong> {{ teacher.username }}</p> <!-- Changed from 'Name' to 'Username' -->
             <p><strong>Email:</strong> {{ teacher.email }}</p>
             <p><strong>Age:</strong> {{ teacher.age }}</p>

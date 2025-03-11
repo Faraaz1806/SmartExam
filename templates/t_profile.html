@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Profile</title>
 </head>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/get_teacher_profile')
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.name) {
+                document.getElementById('welcomeMessage').textContent = "Welcome, " + data.name;
+            } else {
+                document.getElementById('welcomeMessage').textContent = "Welcome, Teacher";
+            }
+        })
+        .catch(error => console.error('Error fetching teacher profile:', error));
+});
+
 <body>
     <div class="profile-container">
         <h1 class="profile-title">Teacher Profile</h1>
