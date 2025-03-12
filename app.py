@@ -244,6 +244,50 @@ def save_teacher_profile():
     )
     return jsonify({"message": "Teacher profile saved successfully!"})
 
+@app.route('/s_test', methods=['GET', 'POST'])
+def s_test():
+    if "username" not in session or session.get("role") != "student":
+        return redirect(url_for('login'))  # Redirect if the user is not a student
+    
+    if request.method == 'POST':
+        test_id = request.form.get("test_id")  # Get the test ID entered by the student
+
+        # Find the test by ID in MongoDB
+        test = mongo.db.tests.find_one({"test_id": int(test_id)})
+
+        if test:
+            return render_template('take_test.html', test=test)  # Render the test page with the test data
+        else:
+            return render_template('s_test.html', message="Test not found.")  # Show message if test not found
+
+    return render_template('s_test.html')  # Display the form to enter Test ID
+
+    @app.route('/get_test/<int:test_id>', methods=['GET'])
+
+
+@app.route('/submit_test/<int:test_id>', methods=['POST'])
+def submit_test(test_id):
+    if "username" not in session or session.get("role") != "student":
+        return redirect(url_for('login'))
+
+    test = mongo.db.tests.find_one({"test_id": test_id})
+    if not test:
+        return jsonify({"message": "Test not found"}), 404
+
+    answers = {}
+    for question_num, question in enumerate(test["questions"], start=1):
+        student_answer = request.form.get(f"question_{question_num}")
+        answers[question_num] = {
+            "correct_answer": question["correct_option"],
+            "student_answer": student_answer,
+            "is_correct": student_answer == question["correct_option"]
+        }
+
+    # Here you can store the answers, grade them, and save them in the database if necessary
+
+    return render_template('test_results.html', answers=answers)
+
+
 
 if __name__ == '__main__':
      app.run(debug=True, port=8000)  # Example: Run on port 8000

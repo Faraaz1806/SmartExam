@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ test.test_title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .question-box {
+            margin-top: 20px;
+        }
+        .question-box label {
+            font-weight: bold;
+        }
+        .question-box input[type="radio"] {
+            margin-right: 10px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ test.test_title }}</h2>
+
+        <form method="POST" action="/submit_test/{{ test.test_id }}">
+            {% for question in test.questions %}
+            <div class="question-box">
+                <label>{{ loop.index }}. {{ question.question }}</label><br>
+                <input type="radio" name="question_{{ loop.index }}" value="A" required> {{ question.options.A }}<br>
+                <input type="radio" name="question_{{ loop.index }}" value="B" required> {{ question.options.B }}<br>
+                <input type="radio" name="question_{{ loop.index }}" value="C" required> {{ question.options.C }}<br>
+                <input type="radio" name="question_{{ loop.index }}" value="D" required> {{ question.options.D }}<br>
+            </div>
+            {% endfor %}
+
+            <button type="submit">Submit Answers</button>
+        </form>
+    </div>
+</body>
+</html>
