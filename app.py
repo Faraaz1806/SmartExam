@@ -247,28 +247,39 @@ def save_teacher_profile():
 @app.route('/s_test', methods=['GET', 'POST'])
 def s_test():
     if "username" not in session or session.get("role") != "student":
-        return redirect(url_for('login'))  # Redirect if the user is not a student
+        return redirect(url_for('login'))
     
     if request.method == 'POST':
-        test_id = request.form.get("test_id")  # Get the test ID entered by the student
+        test_id = request.form.get("test_id")
+        print(f"Student entered test_id: {test_id}")  # Debugging: Print the entered test ID
+        try:
+            test_id_int = int(test_id)
+            test = mongo.tests.find_one({"test_id": test_id_int})
+            print(f"Database query result: {test}") #debugging print of the result of the search.
 
-        # Find the test by ID in MongoDB
-        test = mongo.db.tests.find_one({"test_id": int(test_id)})
+            if test:
+                return render_template('take_test.html', test=test)
+            else:
+                return render_template('s_test.html', message="Test not found.")
+        except ValueError:
+            return render_template('s_test.html', message="Invalid test ID format.")
 
-        if test:
-            return render_template('take_test.html', test=test)  # Render the test page with the test data
-        else:
-            return render_template('s_test.html', message="Test not found.")  # Show message if test not found
+    return render_template('s_test.html')
 
-    return render_template('s_test.html')  # Display the form to enter Test ID
-
-    @app.route('/get_test/<int:test_id>', methods=['GET'])
+@app.route('/get_test/<int:test_id>', methods=['GET'])
+def get_test(test_id):
+    test = mongo.db.tests.find_one({"test_id": test_id})
+    if test:
+        return jsonify(test)  # Return the test details as JSON
+    return jsonify({"message": "Test not found"}), 404
 
 
 @app.route('/submit_test/<int:test_id>', methods=['POST'])
 def submit_test(test_id):
     if "username" not in session or session.get("role") != "student":
         return redirect(url_for('login'))
+
+    print(f"Received test_id: {test_id}")  # Debugging line
 
     test = mongo.db.tests.find_one({"test_id": test_id})
     if not test:
@@ -283,11 +294,7 @@ def submit_test(test_id):
             "is_correct": student_answer == question["correct_option"]
         }
 
-    # Here you can store the answers, grade them, and save them in the database if necessary
-
-    return render_template('test_results.html', answers=answers)
-
-
+    return render_template('test_results.html', answers=answers)  # Render test results page
 
 if __name__ == '__main__':
-     app.run(debug=True, port=8000)  # Example: Run on port 8000
+    app.run(debug=True, port=8000)  # Fixed indentation
