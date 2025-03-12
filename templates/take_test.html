@@ -4,65 +4,264 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ test.test_title }}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f8f9fa;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .question-box {
-            margin-top: 20px;
-        }
-        .question-box label {
-            font-weight: bold;
-        }
-        .question-box input[type="radio"] {
-            margin-right: 10px;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='zmcq.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h2>{{ test.test_title }}</h2>
-
-        <form method="POST" action="/submit_test/{{ test.test_id }}">
-            {% for question in test.questions %}
-            <div class="question-box">
-                <label>{{ loop.index }}. {{ question.question }}</label><br>
-                <input type="radio" name="question_{{ loop.index }}" value="A" required> {{ question.options.A }}<br>
-                <input type="radio" name="question_{{ loop.index }}" value="B" required> {{ question.options.B }}<br>
-                <input type="radio" name="question_{{ loop.index }}" value="C" required> {{ question.options.C }}<br>
-                <input type="radio" name="question_{{ loop.index }}" value="D" required> {{ question.options.D }}<br>
+    <header class="exam-header">
+        <div class="container">
+            <div class="exam-info">
+                <h1>{{ test.test_title }}</h1>
+                <p>• Mid-Term Examination</p>
             </div>
-            {% endfor %}
-
-            <button type="submit">Submit Answers</button>
-        </form>
+            <div class="exam-timer">
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="time-remaining">45:00</span>
+                </div>
+                <div class="progress-info">
+                    <span id="current-question">Question 1</span> of <span id="total-questions">{{ test.questions|length }}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="exam-content">
+        <div class="container">
+            <div class="exam-wrapper">
+                <section class="question-area">
+                    {% for question in test.questions %}
+                    <div class="question-container" id="question-{{ loop.index }}" {% if loop.index != 1 %}style="display: none;"{% endif %}>
+                        <div class="question-number">Question {{ loop.index }}</div>
+                        <div class="question-text">
+                            <p>{{ question.question }}</p>
+                        </div>
+                        <div class="options-container">
+                            <div class="option">
+                                <input type="radio" name="question_{{ loop.index }}" id="q{{ loop.index }}-a" value="A">
+                                <label for="q{{ loop.index }}-a">
+                                    <span class="option-marker">A</span>
+                                    <span class="option-text">{{ question.options.A }}</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="question_{{ loop.index }}" id="q{{ loop.index }}-b" value="B">
+                                <label for="q{{ loop.index }}-b">
+                                    <span class="option-marker">B</span>
+                                    <span class="option-text">{{ question.options.B }}</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="question_{{ loop.index }}" id="q{{ loop.index }}-c" value="C">
+                                <label for="q{{ loop.index }}-c">
+                                    <span class="option-marker">C</span>
+                                    <span class="option-text">{{ question.options.C }}</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="question_{{ loop.index }}" id="q{{ loop.index }}-d" value="D">
+                                <label for="q{{ loop.index }}-d">
+                                    <span class="option-marker">D</span>
+                                    <span class="option-text">{{ question.options.D }}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="question-navigation">
+                        <button class="btn btn-outline" id="prev-btn" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button class="btn btn-outline" id="mark-btn">
+                            <i class="fas fa-bookmark"></i> Mark for Review
+                        </button>
+                        <button class="btn btn-primary" id="next-btn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
+                <aside class="question-sidebar">
+                    <div class="sidebar-header">
+                        <h3>Question Navigator</h3>
+                    </div>
+                    <div class="question-grid">
+                        {% for question in test.questions %}
+                        <button class="question-number-btn {% if loop.index == 1 %}current{% endif %}" data-question="{{ loop.index }}">{{ loop.index }}</button>
+                        {% endfor %}
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <span class="legend-marker current"></span>
+                            <span>Current</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker answered"></span>
+                            <span>Answered</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker marked"></span>
+                            <span>Marked</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker"></span>
+                            <span>Not Visited</span>
+                        </div>
+                    </div>
+                    <div class="submit-container">
+                        <button class="btn btn-submit" id="submit-exam">
+                            Submit Exam
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+    <footer class="exam-footer">
+        <div class="container">
+            <div class="footer-info">
+                <p>Student ID: {{ session["username"] }}</p>
+                <p>Exam ID: {{ test.test_id }}</p>
+            </div>
+            <div class="footer-actions">
+                <button class="btn btn-sm btn-outline" id="report-issue">
+                    <i class="fas fa-flag"></i> Report Issue
+                </button>
+            </div>
+        </div>
+    </footer>
+    <div class="modal" id="submit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Submission</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>You are about to submit your exam. Please review the following information:</p>
+                <div class="submission-summary">
+                    <div class="summary-item">
+                        <span>Total Questions:</span>
+                        <span>{{ test.questions|length }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Answered:</span>
+                        <span id="answered-count">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Marked for Review:</span>
+                        <span id="marked-count">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Not Answered:</span>
+                        <span id="not-answered-count">{{ test.questions|length }}</span>
+                    </div>
+                </div>
+                <p class="warning">Once submitted, you cannot return to this exam.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-submit">Cancel</button>
+                <button class="btn btn-primary" id="confirm-submit">Confirm Submission</button>
+            </div>
+        </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questions = document.querySelectorAll('.question-container');
+            const questionButtons = document.querySelectorAll('.question-number-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const markBtn = document.getElementById('mark-btn');
+            const submitExamBtn = document.getElementById('submit-exam');
+            const submitModal = document.getElementById('submit-modal');
+            const closeModalBtn = document.querySelector('.close-btn');
+            const cancelSubmitBtn = document.getElementById('cancel-submit');
+            const confirmSubmitBtn = document.getElementById('confirm-submit');
+            const answeredCountSpan = document.getElementById('answered-count');
+            const markedCountSpan = document.getElementById('marked-count');
+            const notAnsweredCountSpan = document.getElementById('not-answered-count');
+            let currentQuestion = 1;
+            let answeredQuestions = new Set();
+            let markedQuestions = new Set();
+
+            function showQuestion(questionNumber) {
+                questions.forEach(question => {
+                    question.style.display = 'none';
+                });
+                document.getElementById(`question-${questionNumber}`).style.display = 'block';
+                questionButtons.forEach(button => {
+                    button.classList.remove('current');
+                });
+                document.querySelector(`.question-number-btn[data-question="${questionNumber}"]`).classList.add('current');
+                currentQuestion = questionNumber;
+                prevBtn.disabled = currentQuestion === 1;
+                nextBtn.disabled = currentQuestion === questions.length;
+            }
+
+            questionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    showQuestion(parseInt(this.dataset.question));
+                });
+            });
+
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestion > 1) {
+                    showQuestion(currentQuestion - 1);
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion < questions.length) {
+                    showQuestion(currentQuestion + 1);
+                }
+            });
+
+            questions.forEach((question, index) => {
+                question.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', function() {
+                        answeredQuestions.add(index + 1);
+                        questionButtons[index].classList.add('answered');
+                        updateCounts();
+                    });
+                });
+            });
+
+            markBtn.addEventListener('click', function() {
+                if (markedQuestions.has(currentQuestion)) {
+                    markedQuestions.delete(currentQuestion);
+                    questionButtons[currentQuestion - 1].classList.remove('marked');
+                } else {
+                    markedQuestions.add(currentQuestion);
+                    questionButtons[currentQuestion - 1].classList.add('marked');
+                }
+                updateCounts();
+            });
+
+            function updateCounts() {
+                answeredCountSpan.textContent = answeredQuestions.size;
+                markedCountSpan.textContent = markedQuestions.size;
+                notAnsweredCountSpan.textContent = questions.length - answeredQuestions.size;
+            }
+
+            submitExamBtn.addEventListener('click', function() {
+                updateCounts();
+                submitModal.style.display = 'flex';
+            });
+
+            closeModalBtn.addEventListener('click', function() {
+                submitModal.style.display = 'none';
+            });
+
+            cancelSubmitBtn.addEventListener('click', function() {
+                submitModal.style.display = 'none';
+            });
+
+            confirmSubmitBtn.addEventListener('click', function() {
+                // Here you would add the code to submit the form data to your server
+                // For example:
+                // document.querySelector('form').submit();
+                submitModal.style.display = 'none';
+                alert('Exam submitted!');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -4,104 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-        .login-success-message {
-            color: green;
-            background-color: #e0ffe0;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            display: none; /* Initially hidden */
-            text-align: center; /* Center the message */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+            flex-direction: column;
+        }
+        .dashboard-container {
+            position: relative;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 1000px;
+            text-align: center;
+            border: 1px solid #d1d1d1;
+            z-index: 10;
+        }
+        .student-profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 1000px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .student-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #111;
+        }
+        .student-info h3 {
+            font-size: 20px;
+            color: #333;
+        }
+        .profile-details {
+            display: none;
+            width: 80%;
+            max-width: 1000px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .dashboard-menu {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .dashboard-card {
+            flex: 1;
+            min-width: 250px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .dashboard-card:hover {
+            background: #ddd;
+        }
+        .dashboard-card h3 {
+            font-size: 18px;
+            color: #333;
         }
     </style>
+    <script>
+        function toggleProfile() {
+            var profileDetails = document.getElementById("profileDetails");
+            if (profileDetails.style.display === "none" || profileDetails.style.display === "") {
+                profileDetails.style.display = "block";
+            } else {
+                profileDetails.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
-
-    {% if login_message %}
-        <div id="login-message" class="login-success-message">{{ login_message }}</div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const messageDiv = document.getElementById('login-message');
-                if (messageDiv) {
-                    messageDiv.style.display = 'block'; // Show the message
-                    setTimeout(function() {
-                        messageDiv.style.display = 'none'; // Hide after 3 seconds
-                    }, 3000);
-                }
-            });
-        </script>
-    {% endif %}
-
+    <div class="student-profile" onclick="toggleProfile()">
+        <div class="student-info">
+            <img src="student-profile.jpg" alt="Student Profile">
+            <h3>Welcome, {{ username }}</h3>
+        </div>
+    </div>
+    <div id="profileDetails" class="profile-details">
+        <p><strong>Name:</strong> {{ username }}</p>
+        <p><strong>Email:</strong> student@example.com</p>
+        <p><strong>Age:</strong> 20</p>
+        <p><strong>Profession:</strong> Student</p>
+    </div>
     <div class="dashboard-container">
-        <h1 class="dashboard-title">Student Dashboard</h1>
-        <div class="dashboard-grid">
-            <button class="dashboard-card" onclick="window.location.href='/s_profile'">
-                <i class="fas fa-user-circle icon"></i>
-                <span>Profile</span>
-            </button>
-            <button class="dashboard-card" onclick="window.location.href='/s_test'">
-                <i class="fas fa-clipboard-list icon"></i>
-                <span>Take Test</span>
-            </button>
-            <button class="dashboard-card" onclick="window.location.href='/s_results'">
-                <i class="fas fa-chart-bar icon"></i>
-                <span>Results</span>
-            </button>
+        <h2>Student Dashboard</h2>
+        <div class="dashboard-menu">
+            <div class="dashboard-card" onclick="location.href='/s_test'">
+                <h3>Take a Test</h3>
+            </div>
+            <div class="dashboard-card" onclick="location.href='/s_results'">
+                <h3>View Test Results</h3>
+            </div>
         </div>
     </div>
 </body>
 </html>
-
-<style>
-    body {
-        display: flex;
-        flex-direction: column; /* Changed to column for message placement */
-        justify-content: flex-start; /* Start from the top */
-        align-items: center;
-        min-height: 100vh; /* Use min-height to ensure full viewport coverage */
-        background: #222222;
-        font-family: Arial, sans-serif;
-        margin: 0;
-    }
-    .dashboard-container {
-        text-align: center;
-        margin-top: 20px; /* Add some top margin for spacing */
-    }
-    .dashboard-title {
-        color: white;
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-    }
-    .dashboard-grid {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-    }
-    .dashboard-card {
-        width: 150px;
-        height: 150px;
-        background: white;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        border: none;
-        font-size: 1.4rem;
-        font-weight: bold;
-    }
-    .dashboard-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-    .icon {
-        font-size: 50px;
-        color: #222222;
-        margin-bottom: 10px;
-    }
-</style>
