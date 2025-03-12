@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+            flex-direction: column;
+        }
+        .dashboard-container {
+            position: relative;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 1000px;
+            text-align: center;
+            border: 1px solid #d1d1d1;
+            z-index: 10;
+        }
+        .student-profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 1000px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .student-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #111;
+        }
+        .student-info h3 {
+            font-size: 20px;
+            color: #333;
+        }
+        .profile-details {
+            display: none;
+            width: 80%;
+            max-width: 1000px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .dashboard-menu {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .dashboard-card {
+            flex: 1;
+            min-width: 250px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .dashboard-card:hover {
+            background: #ddd;
+        }
+        .dashboard-card h3 {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function toggleProfile() {
+            var profileDetails = document.getElementById("profileDetails");
+            if (profileDetails.style.display === "none" || profileDetails.style.display === "") {
+                profileDetails.style.display = "block";
+            } else {
+                profileDetails.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="student-profile" onclick="toggleProfile()">
+        <div class="student-info">
+            <img src="student-profile.jpg" alt="Student Profile">
+            <h3>Welcome, Student Name</h3>
+        </div>
+    </div>
+    <div id="profileDetails" class="profile-details">
+        <p><strong>Name:</strong> Student Name</p>
+        <p><strong>Email:</strong> student@example.com</p>
+        <p><strong>Age:</strong> 20</p>
+        <p><strong>Profession:</strong> Student</p>
+    </div>
+    <div class="dashboard-container">
+        <h2>Student Dashboard</h2>
+        <div class="dashboard-menu">
+            <div class="dashboard-card" onclick="location.href='/take-test'">
+                <h3>Take a Test</h3>
+            </div>
+            <div class="dashboard-card" onclick="location.href='/view-results'">
+                <h3>View Test Results</h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
