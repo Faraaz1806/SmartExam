@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html>
 <html lang="en">
 <head>
-    <title>Create exam</title>
+    <title>Create Exam</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Test - SmartExam</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,7 +66,7 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to Create exam!</h1>
+    <h1>Welcome to Create Exam!</h1>
     <p>You have successfully logged in.</p>
     <div class="container">
         <h2>Create Test</h2>
@@ -89,13 +87,15 @@
     </div>
 
     <script>
-        let questionCount = 0;
+        let questionCount = 0;  // Initialize question counter
 
         function addQuestion() {
-            questionCount++;
-            const questionBox = document.createElement("div");
-            questionBox.className = "question-box";
-            questionBox.innerHTML = `
+            questionCount++;  // Increment question count
+
+            const questionsContainer = document.getElementById("questionsContainer");
+            const questionDiv = document.createElement("div");
+            questionDiv.classList.add("question-box");
+            questionDiv.innerHTML = `
                 <label>Question ${questionCount}</label>
                 <textarea name="question_${questionCount}" required></textarea>
 
@@ -111,21 +111,17 @@
                 <label>Option D</label>
                 <input type="text" name="option_D_${questionCount}" required>
 
-                <label>Correct Option</label>
-                <div>
-                    <label><input type="radio" name="correct_option_${questionCount}" value="A" required> A</label>
-                    <label><input type="radio" name="correct_option_${questionCount}" value="B" required> B</label>
-                    <label><input type="radio" name="correct_option_${questionCount}" value="C" required> C</label>
-                    <label><input type="radio" name="correct_option_${questionCount}" value="D" required> D</label>
-                </div>
+                <label>Correct Option (A/B/C/D)</label>
+                <input type="text" name="correct_option_${questionCount}" required>
 
-                <button type="button" class="remove-btn" onclick="removeQuestion(this)">Remove</button>
+                <button type="button" class="remove-btn" onclick="removeQuestion(this)">Remove Question</button>
             `;
-            document.getElementById("questionsContainer").appendChild(questionBox);
+
+            questionsContainer.appendChild(questionDiv);
         }
 
         function removeQuestion(button) {
-            button.parentElement.remove();
+            button.parentElement.remove(); // Remove the question box
         }
 
         document.getElementById("testForm").addEventListener("submit", function(event) {
@@ -135,21 +131,23 @@
             const testTitle = formData.get("test_title");
             const questions = [];
 
-            for (let i = 1; i <= questionCount; i++) {
-                const question = formData.get(`question_${i}`);
-                if (!question) continue;  // Skip empty fields
+            // Collect questions dynamically
+            document.querySelectorAll(".question-box").forEach((div, index) => {
+                const questionNumber = index + 1;
+                const question = formData.get(`question_${questionNumber}`);
+                if (!question) return;
 
                 questions.push({
                     question: question,
                     options: {
-                        A: formData.get(`option_A_${i}`),
-                        B: formData.get(`option_B_${i}`),
-                        C: formData.get(`option_C_${i}`),
-                        D: formData.get(`option_D_${i}`)
+                        A: formData.get(`option_A_${questionNumber}`),
+                        B: formData.get(`option_B_${questionNumber}`),
+                        C: formData.get(`option_C_${questionNumber}`),
+                        D: formData.get(`option_D_${questionNumber}`)
                     },
-                    correct_option: formData.get(`correct_option_${i}`)
+                    correct_option: formData.get(`correct_option_${questionNumber}`)
                 });
-            }
+            });
 
             const testData = {
                 test_title: testTitle,
@@ -163,12 +161,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
+                alert(data.message);  // Show success message with Test ID
+                document.querySelector("input[name='test_id']").value = data.test_id;  // Display Test ID in input
                 window.location.href = "/t_dashboard"; // Redirect after success
             })
             .catch(error => console.error("Error:", error));
         });
     </script>
 </body>
-</html>
 </html>

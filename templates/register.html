@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <style>
+        .flash-message.success {
+            color: green;
+            background-color: #e0ffe0;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        
+        .flash-message.danger {
+            color: red;
+            background-color: #ffe0e0;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -141,8 +156,13 @@
             <button type="submit" class="register-btn">Register</button>
         </form>
         <p class="alt-login">Already have an account? <a href="/login">Login</a></p>
-        <!--<p style="margin: 10px 0; font-size: 14px; color: #666;">OR</p>-->
-        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="flash-message {{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </div>
 </body>
 </html>

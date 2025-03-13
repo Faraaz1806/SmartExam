@@ -5,19 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script>
-        function navigateToProfile() {
-            window.location.href = 's_profile.html';
+    <style>
+        .login-success-message {
+            color: green;
+            background-color: #e0ffe0;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: none; /* Initially hidden */
+            text-align: center; /* Center the message */
         }
-        function navigateToTest() {
-            window.location.href = 's_test.html';
-        }
-        function navigateToResults() {
-            window.location.href = 's_results.html';
-        }
-    </script>    
+    </style>
 </head>
 <body>
+
+    {% if login_message %}
+        <div id="login-message" class="login-success-message">{{ login_message }}</div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const messageDiv = document.getElementById('login-message');
+                if (messageDiv) {
+                    messageDiv.style.display = 'block'; // Show the message
+                    setTimeout(function() {
+                        messageDiv.style.display = 'none'; // Hide after 3 seconds
+                    }, 3000);
+                }
+            });
+        </script>
+    {% endif %}
+
     <div class="dashboard-container">
         <h1 class="dashboard-title">Student Dashboard</h1>
         <div class="dashboard-grid">
@@ -33,7 +49,6 @@
                 <i class="fas fa-chart-bar icon"></i>
                 <span>Results</span>
             </button>
-            
         </div>
     </div>
 </body>
@@ -42,15 +57,17 @@
 <style>
     body {
         display: flex;
-        justify-content: center;
+        flex-direction: column; /* Changed to column for message placement */
+        justify-content: flex-start; /* Start from the top */
         align-items: center;
-        height: 100vh;
+        min-height: 100vh; /* Use min-height to ensure full viewport coverage */
         background: #222222;
         font-family: Arial, sans-serif;
         margin: 0;
     }
     .dashboard-container {
         text-align: center;
+        margin-top: 20px; /* Add some top margin for spacing */
     }
     .dashboard-title {
         color: white;
