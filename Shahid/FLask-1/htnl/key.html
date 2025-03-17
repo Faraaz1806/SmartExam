@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Key Detection</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+</head>
+<body>
+    <h2>Real-Time Key Detection</h2>
+    <ul id="key_events"></ul>
+
+    <script>
+        var s = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
+
+        s.on('keyevent', function(data) {  // Corrected event name
+            var listItem = document.createElement("li");
+            listItem.textContent = "Key: " + data.key + ", Event: " + data.event;
+            document.getElementById("key_events").appendChild(listItem);
+        });
+    </script>
+</body>
+</html>

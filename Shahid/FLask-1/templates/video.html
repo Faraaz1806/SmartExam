@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lan="en">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='v.css') }}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="device-width, initial-scale=1.0">
+        <title>
+          Video_capture
+        </title>
+        <body>
+            <h1>
+             Live Capture
+            </h1>
+            <img src="{{ url_for('video') }}" width="640" height="480">
+        </body>
+    </head>
+
+</html>

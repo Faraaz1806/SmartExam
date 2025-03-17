@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartExam - Online Assessment Platform</title>
+    <link rel="stylesheet" href="3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Initial Selection Screen -->
+    <div class="container selection-container" id="selection-screen">
+        <div class="logo-container">
+            <div class="logo">Smart<span>Exam</span></div>
+        </div>
+
+        <h1>Welcome to SmartExam</h1>
+        <p class="subtitle">Select an exam to begin your assessment</p>
+
+        <!-- Exam Categories List -->
+        <div id="exam-list">
+            <ul>
+                <li onclick="selectExam('Python Programming')">
+                    <i class="fab fa-python"></i>
+                    <span>Python Programming</span>
+                    <span class="exam-info">60 min • 40 questions</span>
+                </li>
+                <li onclick="selectExam('Java Development')">
+                    <i class="fab fa-java"></i>
+                    <span>Java Development</span>
+                    <span class="exam-info">75 min • 50 questions</span>
+                </li>
+                <li onclick="selectExam('General Knowledge')">
+                    <i class="fas fa-brain"></i>
+                    <span>General Knowledge</span>
+                    <span class="exam-info">45 min • 30 questions</span>
+                </li>
+                <li onclick="selectExam('Advanced Mathematics')">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>Advanced Mathematics</span>
+                    <span class="exam-info">90 min • 50 questions</span>
+                </li>
+            </ul>
+        </div>
+
+        <div id="exam-id-section" class="hidden">
+            <div class="back-button" onclick="backToExamList()">
+                <i class="fas fa-arrow-left"></i> Back to exam list
+            </div>
+
+            <h2 id="exam-name"></h2>
+            <p class="exam-description">This assessment will test your knowledge and skills in the selected subject area.</p>
+
+            <div class="form-group">
+                <label for="exam-id">Enter the unique exam ID to start:</label>
+                <input type="text" id="exam-id" placeholder="e.g., PYTHON-2023-A">
+                <p class="form-hint">The exam ID was provided by your instructor or in your email invitation.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="student-id-input">Your Student ID:</label>
+                <input type="text" id="student-id-input" placeholder="e.g., STU20230045">
+            </div>
+
+            <button class="btn btn-primary" onclick="startInstructions()">
+                <i class="fas fa-play-circle"></i> Start Exam
+            </button>
+        </div>
+
+        <div id="instructions" class="hidden">
+            <div class="back-button" onclick="backToExamId()">
+                <i class="fas fa-arrow-left"></i> Back
+            </div>
+
+            <h2>Exam Instructions</h2>
+            <div class="instruction-container">
+                <div class="instruction-list">
+                    <h3>Before You Begin:</h3>
+                    <ul>
+                        <li>Ensure you are in a quiet environment with stable internet connection</li>
+                        <li>Close all other applications and browser tabs</li>
+                        <li>Enable camera and microphone when prompted</li>
+                        <li>Have your ID ready for verification</li>
+                    </ul>
+
+                    <h3>During the Exam:</h3>
+                    <ul>
+                        <li>No cheating or external resources allowed</li>
+                        <li>Your camera and microphone will be active throughout the exam</li>
+                        <li>The timer will start once you begin</li>
+                        <li>You can mark questions for review and return to them later</li>
+                        <li>Submit your exam once you have completed all questions</li>
+                    </ul>
+                </div>
+
+                <div class="verification-section">
+                    <h3>Identity Verification</h3>
+                    <div id="camera-feed">
+                        <video id="video" width="320" height="240" autoplay></video>
+                        <div class="camera-overlay">
+                            <div class="camera-status">
+                                <span id="camera-status-text">Camera not active</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="requestMediaAccess()">
+                        <i class="fas fa-camera"></i> Enable Camera & Mic
+                    </button>
+                </div>
+            </div>
+
+            <div class="agreement-section">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="agreement-checkbox">
+                    <label for="agreement-checkbox">I have read and agree to follow all exam rules and instructions</label>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="proceed-btn" disabled onclick="startExam()">
+                <i class="fas fa-check-circle"></i> Proceed to Exam
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

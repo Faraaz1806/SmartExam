@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restricted Keys Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+</head>
+<body>
+    <h2>Key Press Detection (C & V are Restricted)</h2>
+    <ul id="key_events"></ul>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('key_event', function(data) {
+            var listItem = document.createElement("li");
+            listItem.textContent = "Key: " + data.key + ", Event: " + data.event;
+            document.getElementById("key_events").appendChild(listItem);
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key.toLowerCase() === "c" || event.key.toLowerCase() === "v") {
+                alert("The '" + event.key.toUpperCase() + "' key is restricted on this page!");
+                event.preventDefault();  
+            }
+        });
+    </script>
+</body>
+</html>

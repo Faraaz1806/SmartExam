@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartExam - Exam</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="exam-interface">
+        <header class="exam-header">
+            <div class="container">
+                <div class="exam-info">
+                    <h1 id="exam-title">Advanced Mathematics</h1>
+                    <p id="exam-subtitle">Mid-Term Examination</p>
+                </div>
+                <div class="exam-timer">
+                    <div class="timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="time-remaining">45:00</span>
+                    </div>
+                    <div class="progress-info">
+                        <span id="current-question">Question 1</span> of <span id="total-questions">50</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="exam-content">
+            <div class="container">
+                <div class="exam-wrapper">
+                    <section class="question-area">
+                        <div class="question-container">
+                            <div class="question-number">Question 1</div>
+                            <div class="question-text">
+                                <p>If f(x) = 3x² + 2x - 5 and g(x) = 2x - 1, what is the value of (f ∘ g)(2)?</p>
+                            </div>
+                            <div class="options-container">
+                                <div class="option">
+                                    <input type="radio" name="q1" id="q1-a">
+                                    <label for="q1-a">23</label>
+                                </div>
+                                <div class="option">
+                                    <input type="radio" name="q1" id="q1-b">
+                                    <label for="q1-b">31</label>
+                                </div>
+                                <div class="option">
+                                    <input type="radio" name="q1" id="q1-c">
+                                    <label for="q1-c">35</label>
+                                </div>
+                                <div class="option">
+                                    <input type="radio" name="q1" id="q1-d">
+                                    <label for="q1-d">39</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-navigation">
+                            <button class="btn btn-outline" id="prev-btn" disabled>Previous</button>
+                            <button class="btn btn-outline" id="mark-btn">Mark for Review</button>
+                            <button class="btn btn-primary" id="next-btn">Next</button>
+                        </div>
+                    </section>
+
+                    <aside class="question-sidebar">
+                        <h3>Question Navigator</h3>
+                        <div class="question-grid">
+                            <button class="question-number-btn current">1</button>
+                            <button class="question-number-btn">2</button>
+                            <button class="question-number-btn answered">3</button>
+                            <button class="question-number-btn">4</button>
+                            <button class="question-number-btn marked">5</button>
+                        </div>
+                        <div class="submit-container">
+                            <button class="btn btn-submit" id="submit-exam">Submit Exam</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+
+        <footer class="exam-footer">
+            <div class="container">
+                <p>Student ID: <span id="student-id">STU20230045</span></p>
+                <p>Exam ID: <span id="display-exam-id">MATH2023-MT</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

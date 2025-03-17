@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test For Tab</title>
+</head>
+<body>
+    <header>
+        <h1>Reload to me by clicking on another tab</h1>
+    </header>
+
+    <script>
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                alert("You can't switch to a different tab!");
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+</html>

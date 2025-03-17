@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>TaskFlow</h2>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Tasks</a></li>
+                <li><a href="#">Reports</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h1>Dashboard</h1>
+                <h2>Add To Do</h2>
+            </header>
+
+            <div class="filter-new-task">
+                <form action="/" method="POST">
+                    <input type="text" name="title" placeholder="Enter task title..." required>
+                    <button type="submit" class="btn">Add Task</button>
+                </form>
+            </div>
+
+            <div class="task-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for todo in alltodo %}
+                        <tr>
+                            <td>{{ todo.sno }}</td>  
+                            <td>{{ todo.title }}</td>
+                            <td>{{ todo.desc }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="load-more">
+                <button class="btn">Load More</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='key.js') }}"></script>
+    <script src="{{ url_for('static', filename='wait.js') }}"></script>
+    <script src="{{ url_for('static', filename='tab.js') }}"></script>
+</body>
+</html>

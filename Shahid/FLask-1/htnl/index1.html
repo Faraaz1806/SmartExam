@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <link rel="stylesheet" href="{{ url_for('static', filename='s.css') }}">
+    <title>Flask Form with Database</title>
+</head>
+<body>
+    <h1>Enter Your Name</h1>
+    <form action="/submit" method="post">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="stored">
+    <h2>Stored Users</h2>
+    <ul class="user-list">
+        {% for user in users %}
+            <li class="user-item">{{ user.name }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+    <div class="delete">
+            <h2>Delete User Data</h2>
+            <ul>
+                {% for user in users %}
+                    <li>
+                        {{ user.name }} 
+                        <a href="/delete/{{ user.id }}" style="color: rgb(87, 87, 87);">[Delete]</a>
+                    </li>
+                {% endfor %}
+            </ul>
+    </div>
+</body>
+</html>

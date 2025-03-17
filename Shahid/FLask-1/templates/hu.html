@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartExam - Online Mock Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to SmartExam</h1>
+
+        <!-- Exam Categories List -->
+        <div id="exam-list">
+            <ul>
+                <li onclick="selectExam('Python')">Python Exam</li>
+                <li onclick="selectExam('Java')">Java Exam</li>
+                <li onclick="selectExam('General Knowledge')">General Knowledge Exam</li>
+            </ul>
+        </div>
+
+        <!-- Exam ID Input and Instructions Section -->
+        <div id="exam-id-section" class="hidden">
+            <h2 id="exam-name"></h2>
+            <p>Enter the unique exam ID to start:</p>
+            <input type="text" id="exam-id" placeholder="Enter Exam ID">
+            <button onclick="startInstructions()">Start Exam</button>
+        </div>
+
+        <!-- Instructions Modal -->
+        <div id="instructions" class="hidden">
+            <h3>Instructions</h3>
+            <ul>
+                <li>No cheating allowed.</li>
+                <li>Ensure camera and microphone are enabled.</li>
+                <li>The timer will start once the exam begins.</li>
+            </ul>
+
+            <!-- Add Video element to show camera feed -->
+            <div id="camera-feed">
+                <video id="video" width="320" height="240" autoplay></video>
+            </div>
+
+            <button onclick="startExam()">Proceed to Exam</button>
+        </div>
+
+
+        <!-- Exam Page -->
+        <div id="exam-page" class="hidden">
+            <div id="exam-timer">
+                Time Remaining: <span id="timer">15:00</span>
+            </div>
+
+            <!-- Display Camera Feed on Exam Page -->
+            <div id="camera-feed">
+                <video id="exam-video" width="320" height="240" autoplay></video>
+            </div>
+
+            <div id="exam-question">
+                <!-- Question and Options will be displayed here -->
+            </div>
+
+            <div id="controls">
+                <button id="prev-btn" onclick="prevQuestion()">Previous</button>
+                <button id="next-btn" onclick="nextQuestion()">Next</button>
+                <button id="submit-btn" onclick="submitExam()">Submit</button>
+            </div>
+
+            <!-- Video and Audio Access -->
+            <div id="media-access">
+                <button onclick="requestMediaAccess()">Enable Camera & Mic</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

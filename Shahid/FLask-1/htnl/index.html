@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='s.css') }}">
+    <title>Flask</title>
+</head>
+<body>
+    <div class="container">
+        <div class="container-class">
+            <h1>Enter Your Name</h1>
+            <form action="/submit" method="POST">
+                <input type="text" name="name" placeholder="Your name" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

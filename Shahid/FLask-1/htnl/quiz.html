@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Test</title>
+    <link rel="stylesheet" href="quiz.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="exam-header">
+        <div class="container">
+            <div class="exam-info">
+                <h1>Advanced Mathematics</h1>
+                <p>•Mid-Term Examination </p>
+            </div>
+            <div class="exam-timer">
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="time-remaining">45:00</span>
+                </div>
+                <div class="progress-info">
+                    <span id="current-question">Question 1</span> of <span id="total-questions">50</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="exam-content">
+        <div class="container">
+            <div class="exam-wrapper">
+                <section class="question-area">
+                    <div class="question-container">
+                        <div class="question-number">Question 1</div>
+                        <div class="question-text">
+                            <p>If f(x) = 3x² + 2x - 5 and g(x) = 2x - 1, what is the value of (f ∘ g)(2)?</p>
+                        </div>
+                        <div class="options-container">
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1-a" value="a">
+                                <label for="q1-a">
+                                    <span class="option-marker">A</span>
+                                    <span class="option-text">23</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1-b" value="b">
+                                <label for="q1-b">
+                                    <span class="option-marker">B</span>
+                                    <span class="option-text">31</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1-c" value="c">
+                                <label for="q1-c">
+                                    <span class="option-marker">C</span>
+                                    <span class="option-text">35</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1-d" value="d">
+                                <label for="q1-d">
+                                    <span class="option-marker">D</span>
+                                    <span class="option-text">39</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-navigation">
+                        <button class="btn btn-outline" id="prev-btn" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button class="btn btn-outline" id="mark-btn">
+                            <i class="fas fa-bookmark"></i> Mark for Review
+                        </button>
+                        <button class="btn btn-primary" id="next-btn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="question-sidebar">
+                    <div class="sidebar-header">
+                        <h3>Question Navigator</h3>
+                    </div>
+                    <div class="question-grid">
+                        <button class="question-number-btn ">1</button>
+                        <button class="question-number-btn">2</button>
+                        <button class="question-number-btn ">3</button>
+                        <button class="question-number-btn">4</button>
+                        <button class="question-number-btn">5</button>
+                        <button class="question-number-btn">6</button>
+                        <button class="question-number-btn answered">7</button>
+                        <button class="question-number-btn">8</button>
+                        <button class="question-number-btn">9</button>
+                        <button class="question-number-btn">10</button>
+                        <button class="question-number-btn">11</button>
+                        <button class="question-number-btn">12</button>
+                        <button class="question-number-btn">13</button>
+                        <button class="question-number-btn">14</button>
+                        <button class="question-number-btn">15</button>
+                        <button class="question-number-btn">16</button>
+                        <button class="question-number-btn">17</button>
+                        <button class="question-number-btn">18</button>
+                        <button class="question-number-btn">19</button>
+                        <button class="question-number-btn">20</button>
+                        <button class="question-number-btn">21</button>
+                        <button class="question-number-btn">22</button>
+                        <button class="question-number-btn">23</button>
+                        <button class="question-number-btn">24</button>
+                        <button class="question-number-btn">25</button>
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <span class="legend-marker current"></span>
+                            <span>Current</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker answered"></span>
+                            <span>Answered</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker marked"></span>
+                            <span>Marked</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker"></span>
+                            <span>Not Visited</span>
+                        </div>
+                    </div>
+                    <div class="submit-container">
+                        <button class="btn btn-submit" id="submit-exam">
+                            Submit Exam
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+<footer class="exam-footer">
+    <div class="container">
+        <div class="footer-info">
+            <p>Student ID:</p>
+            <p>Exam ID</p>
+        </div>
+        <div class="footer-actions">
+            <button class="btn btn-sm btn-outline" id="report-issue">
+                <i class="fas fa-flag"></i>
+            </button>
+        </div>
+    </div>
+</footer>
+
+<div class="modal" id="submit-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Submission</h3>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>You are about to submit your exam. Please review the following information:</p>
+        <div class="submission-summary">
+            <div class="summary-item">
+                <span>Total Questions:</span>
+                <span>20</span>
+            </div>
+            <div class="summary-item">
+                <span>Answered:</span>
+                <span>2</span>
+            </div>
+            <div class="summary-item">
+                <span>Marked for Review:</span>
+                <span>1</span>
+            </div>
+            <div class="summary-item">
+                <span>Not Answered:</span>
+                <span>5</span>
+            </div>
+        </div>
+        <p class="warning">Once submitted, you cannot return to this exam.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancel-submit">Cancel</button>
+            <button class="btn btn-primary" id="confirm-submit">Confirm Submission</button>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('submit-exam').addEventListener('click', function() {
+        document.getElementById('submit-modal').style.display = 'flex';
+    });
+    
+    document.querySelector('.close-btn').addEventListener('click', function() {
+        document.getElementById('submit-modal').style.display = 'none';
+    });
+    
+    document.getElementById('cancel-submit').addEventListener('click', function() {
+        document.getElementById('submit-modal').style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
