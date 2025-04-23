@@ -37,18 +37,24 @@ def t_createtest():
         return redirect(url_for('login'))  # Restrict access to teachers only
     
     if request.method == 'POST':
-        data = request.json
+        data = request.get_json() or request.form
         test_id = random.randint(1000, 9999)  # Generate a random 4-digit test ID
         
         test_data = {
             "test_id": test_id,
             "teacher": session["username"],  
             "test_title": data.get("test_title"),
+            "timer_duration": data.get("timer_duration", 45),  # Default to 45 minutes if not provided
             "questions": data.get("questions")  # List of questions
         }
         
         # Store in MongoDB
-        mongo.tests.insert_one(test_data)
+        try:
+            mongo.tests.insert_one(test_data)
+            print(f"Test inserted successfully with test_id: {test_id}")
+        except Exception as e:
+            print(f"Error inserting test: {e}")
+            return jsonify({"message": "Failed to create test"}), 500
         
         return jsonify({"message": f"Test created successfully! Test ID: {test_id}", "test_id": test_id})
 
@@ -281,20 +287,97 @@ def submit_test(test_id):
 
     print(f"Received test_id: {test_id}")  # Debugging line
 
+    # Also get test_id from form data as fallback
+    form_test_id = request.form.get("test_id")
+    if form_test_id:
+        try:
+            form_test_id_int = int(form_test_id)
+            if form_test_id_int != test_id:
+                print(f"Warning: test_id in URL ({test_id}) and form ({form_test_id_int}) differ. Using form test_id.")
+                test_id = form_test_id_int
+        except ValueError:
+            print(f"Invalid test_id in form data: {form_test_id}")
+
     test = mongo.db.tests.find_one({"test_id": test_id})
+    print(f"Queried test_id: {test_id} (type: {type(test_id)})")
+    if test:
+        print(f"Found test in DB with test_id: {test.get('test_id')} (type: {type(test.get('test_id'))})")
     if not test:
         return jsonify({"message": "Test not found"}), 404
 
     answers = {}
+    score = 0
+    total_questions = len(test["questions"])
     for question_num, question in enumerate(test["questions"], start=1):
         student_answer = request.form.get(f"question_{question_num}")
+        is_correct = student_answer == question["correct_option"]
+        if is_correct:
+            score += 1
         answers[question_num] = {
+            "question": question.get("question_text", ""),
             "correct_answer": question["correct_option"],
             "student_answer": student_answer,
-            "is_correct": student_answer == question["correct_option"]
+            "is_correct": is_correct
         }
 
-    return render_template('test_results.html', answers=answers)  # Render test results page
+    # Store the test result in MongoDB
+    result_data = {
+        "test_id": test_id,
+        "student": session["username"],
+        "score": score,
+        "total": total_questions,
+        "answers": answers
+    }
+
+    try:
+        mongo.db.results.insert_one(result_data)
+        print(f"Test result stored successfully for student {session['username']} and test_id {test_id}")
+    except Exception as e:
+        print(f"Error storing test result: {e}")
+        return jsonify({"message": "Failed to store test result"}), 500
+
+    return render_template('test_results.html', answers=answers, score=score, total=total_questions)  # Render test results page
+
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from flask import send_file
+
+@app.route('/view_result_pdf/<int:test_id>')
+def view_result_pdf(test_id):
+    if "username" not in session or session.get("role") != "student":
+        return redirect(url_for('login'))
+
+    result = mongo.db.results.find_one({"test_id": test_id, "student": session["username"]})
+    if not result:
+        return "Result not found", 404
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(50, height - 50, f"Test Result for {session['username']}")
+    p.setFont("Helvetica", 12)
+    p.drawString(50, height - 80, f"Test ID: {result['test_id']}")
+    p.drawString(50, height - 100, f"Score: {result['score']} / {result['total']}")
+
+    y = height - 140
+    for qnum, answer in result['answers'].items():
+        p.drawString(50, y, f"Q{qnum}: {answer['question']}")
+        y -= 20
+        p.drawString(70, y, f"Your answer: {answer['student_answer']}")
+        y -= 20
+        p.drawString(70, y, f"Correct answer: {answer['correct_answer']}")
+        y -= 30
+        if y < 100:
+            p.showPage()
+            y = height - 50
+
+    p.save()
+    buffer.seek(0)
+
+    return send_file(buffer, as_attachment=True, download_name=f"result_test_{test_id}.pdf", mimetype='application/pdf')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)  # Fixed indentation
+    app.run(debug=True, port=8000)

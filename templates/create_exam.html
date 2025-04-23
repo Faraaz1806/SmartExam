@@ -77,6 +77,9 @@
             <label>Test Title</label>
             <input type="text" name="test_title" id="testTitle" required>
 
+            <label>Timer Duration (minutes)</label>
+            <input type="number" name="timer_duration" id="timerDuration" min="1" max="180" required>
+
             <div id="questionsContainer">
                 <!-- Questions will be dynamically added here -->
             </div>
@@ -129,6 +132,7 @@
 
             const formData = new FormData(this);
             const testTitle = formData.get("test_title");
+            const timerDuration = formData.get("timer_duration");
             const questions = [];
 
             // Collect questions dynamically
@@ -151,6 +155,7 @@
 
             const testData = {
                 test_title: testTitle,
+                timer_duration: parseInt(timerDuration),
                 questions: questions
             };
 
